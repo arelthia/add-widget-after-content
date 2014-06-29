@@ -12,7 +12,7 @@ This plugin is built to add a widget/sidebar after post content.
 
 == Description ==
 
-The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content. You can prevent the after content widget from showing on a pataculiar post from the post editor page. 
+The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content. You can prevent the after content widget from showing on a post from the post editor page. 
 
 == Installation ==
 
