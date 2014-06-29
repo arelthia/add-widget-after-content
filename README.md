@@ -8,11 +8,11 @@
 **License:** GPLv3 or later
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html
 
-This plugin is built to add a widget area after post content. 
+This plugin is built to add a widget area/sidebar after post content. 
 
 ## Description ##
 
-The plugin adds a widget area that you can add any widget content to. The widget is then displayed on posts after the content. You can prevent the after content widget from showing on a pataculiar post from the post editor page. 
+The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content. You can prevent the after content widget from showing on a pataculiar post from the post editor page. 
 
 ## Installation ##
 
