@@ -3,8 +3,8 @@ Contributors: apintop
 Donate link: http://PintopSolutions.com/donate
 Tags: posts, widget
 Requires at least: 3.6
-Tested up to: 3.9.1
-Stable tag: 1.0.0
+Tested up to: 4.1
+Stable tag: 1.0.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,10 +50,14 @@ There is no settings page. Add a widget to the After content sidebar in the Widg
 2. Remove widget after content for a post.
 
 == ChangeLog ==
+= 1.0.2 =
+*   Changed widget ids to classes so you can add two widgets after the content. 
 
+=======
 = 1.0.0 =
 *   First release
 
 == Upgrade Notice ==
-
+=======
 There is no need to upgrade just yet.
+
