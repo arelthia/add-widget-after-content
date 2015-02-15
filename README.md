@@ -12,9 +12,17 @@ This plugin is built to add a widget/sidebar after post content.
 
 == Description ==
 
-The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content, before the comments. You can prevent the after content widget from showing on a post from the post editor page. You can also prevent the after content widget from displaying on specific posts types or post formats.
+The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on 
 
-* Now includes a setting page under the Appearance Menu to give you more control. <a href="https://www.pintopproductions.com/product/add-widget-content/">More info</a>
+posts after the content, before the comments. You can prevent the after content widget from showing on 
+
+a post from the post editor page. You can also prevent the after content widget from displaying on 
+
+specific posts types or post formats.
+
+* Now includes a setting page under the Appearance Menu to give you more control. <a 
+
+href="https://www.pintopproductions.com/product/add-widget-content/">More info</a>
 
 == Installation ==
 
@@ -46,7 +54,9 @@ The plugin adds a sidebar that you can add any widget content to. The widget is 
 The settings page is located under the "Appearance" menu
 
 = Can you tell the widget which post types to display on? =
-The settings page is located under the "Appearance" menu. On the settings page you can exclude a post type or a post format. 
+The settings page is located under the "Appearance" menu. On the settings page you can exclude a post 
+
+type or a post format. 
 
 
 == Screenshots ==

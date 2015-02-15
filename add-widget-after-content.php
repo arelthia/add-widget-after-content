@@ -47,7 +47,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 *
 		 * @var      string
 		 */
-		protected $plugin_slug = 'add-widget-after-content';	
+		protected $plugin_slug = 'add-widget-after-content';
 		protected $plugin_version = '2.0.1';
 		protected $settings;
 		/**
@@ -86,7 +86,6 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		public static function uninstall() {
 		    delete_post_meta_by_key( '_awac_hide_widget' );
 		    unregister_sidebar( 'add-widget-after-content' );
-		    
 		}
 		
 		/**
