@@ -4,20 +4,15 @@
  * @package   Add Widget After Content
  * @author    Arelthia Phillips
  * @license   GPL-3.0+
- * @link      http://pintopsolutions.com
+ * @link      https://www.pintopproductions.com/product/add-widget-content/
  * @copyright Copyright (C) 2014 Arelthia Phillips
  *
  * Plugin Name: 		Add Widget After Content
  * Description: 		This plugin adds a widget area after post content before the comments. You can also tell it not to display on a specific post. 
- * Plugin URI: 			http://www.pintopproductions.com/products/
+ * Plugin URI: 			https://www.pintopproductions.com/product/add-widget-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			1.0.2
- * Description: 		This plugin adds a widget area after post content. You can also tell it not to display on a specific post. 
- * Plugin URI: 			http://pintopsolutions.com/plugins/add-widget-after-content
- * Author: 				Arelthia Phillips
- * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			1.0.0
+ * Version: 			2.0.0
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
@@ -29,9 +24,14 @@
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
-
+define( 'AWAC_PLUGIN_DIR',         plugin_dir_path( __FILE__ ) );
+define( 'AWAC_PLUGIN_FILE',        __FILE__ );
 
 if ( !class_exists( 'AddWidgetAfterContent' ) ) {
+	
+	require_once(AWAC_PLUGIN_DIR . 'add-widget-after-content-admin.php');
+
+
 	/**
 	 * @package AddWidgetAfterContent
 	 * @author  Arelthia Phillips
@@ -43,18 +43,22 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * The variable name is used as the text domain when internationalizing strings
 		 * of text. 
 		 *
-		 * @since    1.0.0
+		 * @since    2.0.0
 		 *
 		 * @var      string
 		 */
 		protected $plugin_slug = 'add-widget-after-content';	
-
+		protected $plugin_version = '2.0.0';
+		protected $settings;
 		/**
 		 * Initialize the plugin 
 		 * @access public
 		 * @return AddWidgetAfterContent
 		 */
 		function __construct() {
+
+		
+
 			add_action( 'init', array( $this, 'load_textdomain' ) );
 			add_action(	'widgets_init', array( $this,'register_sidebar'));
 			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
@@ -64,6 +68,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
 			add_action( 'save_post', array( $this,'after_content_save_meta') );
 			add_filter ('the_content', array( $this,'insert_after_content'));
+			$this->settings = new AddWidgetAfterContentAdmin($this->plugin_slug, $this->plugin_version );
 		}
 
 		/**
@@ -81,7 +86,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		public static function uninstall() {
 		    delete_post_meta_by_key( '_awac_hide_widget' );
 		    unregister_sidebar( 'add-widget-after-content' );
-		    //remove_shortcode('psac');
+		    $this->settings->uninstall();
 		}
 		
 		/**
@@ -102,9 +107,6 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 
 		/**
 		 * Return the plugin slug.
-		 *
-		 * @since    1.0.0
-		 * @return   Plugin slug variable.
 		 */
 		public function get_plugin_slug() {
 			return $this->plugin_slug;
@@ -116,6 +118,23 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @return $content the post content plus the widget area content
 		 */
 		function insert_after_content( $content ) {
+
+			$exclude_format = (array)get_option('all_post_formats');
+			$exclude_type = (array)get_option('all_post_types');
+			$ps_type = get_post_type( get_the_ID() );
+			$ps_format = get_post_format();
+			if ( false === $ps_format ) {
+				$ps_format = 'standard';
+			}
+
+			if(isset($exclude_type[$ps_type]) == 1){
+				return $content;
+			}
+
+			if(isset($exclude_format[$ps_format]) == 1){
+				return $content;
+			}
+
 		   //should the widget be shown after the content
 		   $ps_hide_widget = get_post_meta( get_the_ID(), '_awac_hide_widget', true ); 
 		  //if this is a single page and the widget is not set to be hide
@@ -179,7 +198,6 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		/**
 		 * Load the plugin text domain for translation.
 		 *
-		 * @since    1.0.0
 		 */
 		public function load_textdomain() {
 
