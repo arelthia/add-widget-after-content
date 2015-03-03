@@ -12,7 +12,7 @@
  * Plugin URI: 			https://www.pintopproductions.com/product/add-widget-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			2.0.2
+ * Version: 			2.0.3
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
@@ -167,7 +167,8 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			$format = get_post_format();
 			
 			//if not an excluded post type and not an excluded post format
-		    if( !isset( $exclude_type[$post_type] ) && !isset( $exclude_format[$format] ) ){
+			//TODO:: Metabox not shown on postformats that are excluded !isset( $exclude_format[$format] ) 
+		    if( !isset( $exclude_type[$post_type] ) ){
 		        add_meta_box( 'ps-meta', 'Widget After Content', array( $this, 'after_content_metabox' ), $post_type , 'normal', 'high' );
 			}else{
 				remove_meta_box( 'ps-meta', $post_type, 'normal' );

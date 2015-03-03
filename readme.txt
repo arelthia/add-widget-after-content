@@ -4,15 +4,15 @@ Donate link: http://PintopSolutions.com/donate
 Tags: posts, widget
 Requires at least: 3.6
 Tested up to: 4.1.1
-Stable tag: 2.0.1
+Stable tag: 2.0.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-This plugin is built to add a widget/sidebar after post content. 
+This plugin is built to add a widget/sidebar after content. 
 
 == Description ==
 
-The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content, before the comments. You can prevent the after content widget from showing on a post from the post editor page. You can also prevent the after content widget from displaying on specific posts types or post formats.
+The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content, before the comments. You can prevent the after content widget from showing on a post from the post editor page. You can also prevent the after content widget from displaying on specific posts types or post formats. The widget can also be added to pages. 
 
 * Now includes a setting page under the Appearance Menu to give you more control. <a href="https://www.pintopproductions.com/product/add-widget-content/">More info</a>
 
@@ -56,6 +56,8 @@ The settings page is located under the "Appearance" menu. On the settings page y
 3. Remove widget after content for a post
 
 == ChangeLog ==
+= 2.0.3 =
+*	Fix meta box not showing when post formats not supported
 = 2.0.2 =
 *   Add widget area to page
 *	Remove meta box when post type or post format is excluded.
