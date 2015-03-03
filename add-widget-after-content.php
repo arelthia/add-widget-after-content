@@ -12,7 +12,7 @@
  * Plugin URI: 			https://www.pintopproductions.com/product/add-widget-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			2.0.1
+ * Version: 			2.0.2
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
@@ -64,10 +64,6 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
 			add_action( 'save_post', array( $this,'after_content_save_meta') );
 			add_filter(	'the_content', array( $this,'insert_after_content'));
-			add_action('widgets_init', array( $this,'register_sidebar'));
-			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
-			add_action( 'save_post', array( $this,'after_content_save_meta') );
-			add_filter ('the_content', array( $this,'insert_after_content'));
 			$this->settings = new AddWidgetAfterContentAdmin($this->plugin_slug, $this->plugin_version );
 		}
 
@@ -136,8 +132,9 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 
 		   //should the widget be shown after the content
 		   $ps_hide_widget = get_post_meta( get_the_ID(), '_awac_hide_widget', true ); 
-		  //if this is a single page and the widget is not set to be hide
-		   if( is_single() &&  $ps_hide_widget != 1 ) {
+		  
+		   //if this is a single page or post and the widget is not set to be hide
+		   if( is_singular() &&  $ps_hide_widget != 1 ) {
 		      $content.= $this->get_after_content();
 		   }
 		   return $content;
@@ -156,10 +153,25 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		}
 
 		/**
-		 * Add a meta box to post admin pages
+		 * Add a meta box to admin pages that are not excluded
 		 */
-		function after_content_create_metabox() {
-		    add_meta_box( 'ps-meta', 'Widget After Content', array( $this, 'after_content_metabox' ), 'post', 'normal', 'high' );
+		function after_content_create_metabox( $post_type ) {
+
+			//get all excluded post types
+			$exclude_type = (array)get_option('all_post_types');
+
+			//get all excluded post formats
+			$exclude_format = (array)get_option('all_post_formats');
+
+			//get the current post format
+			$format = get_post_format();
+			
+			//if not an excluded post type and not an excluded post format
+		    if( !isset( $exclude_type[$post_type] ) && !isset( $exclude_format[$format] ) ){
+		        add_meta_box( 'ps-meta', 'Widget After Content', array( $this, 'after_content_metabox' ), $post_type , 'normal', 'high' );
+			}else{
+				remove_meta_box( 'ps-meta', $post_type, 'normal' );
+			}
 		}
 
 		/**
