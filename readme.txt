@@ -2,9 +2,9 @@
 Contributors: apintop
 Donate link: http://PintopSolutions.com/donate
 Tags: posts, widget
-Requires at least: 3.6
-Tested up to: 4.1.1
-Stable tag: 2.0.3
+Requires at least: 4.0
+Tested up to: 4.5
+Stable tag: 2.0.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,7 +14,12 @@ This plugin is built to add a widget/sidebar after content.
 
 The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content, before the comments. You can prevent the after content widget from showing on a post from the post editor page. You can also prevent the after content widget from displaying on specific posts types or post formats. The widget can also be added to pages. 
 
-* Now includes a setting page under the Appearance Menu to give you more control. <a href="https://www.pintopproductions.com/product/add-widget-content/">More info</a>
+== Documentation ==
+* Getting Started With AWAC <a href="https://pintopsolutions.com/doc/getting-started-with-awac/">AWAC Settings</a>
+* How to place widgets side by side <a href="https://pintopsolutions.com/doc/placing-widgets-side-side/">Style Tips</a> 
+* AWAC can now be added after the comments form <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/">View Addons</a>
+* AWAC can be added after content generated using Page Builder by SiteOrigin <a target="_blank" href="https://pintopsolutions.com/downloads/awac-page-builder/">Learn More</a>
+* Your suggestions and feedback is appreciated.
 
 == Installation ==
 
@@ -56,29 +61,27 @@ The settings page is located under the "Appearance" menu. On the settings page y
 3. Remove widget after content for a post
 
 == ChangeLog ==
+= 2.1 =
+* Add filters to awac dynamic sidebar content
+* Change instance name
+= 2.0.4 =
+*	Add link to documentation
 = 2.0.3 =
 *	Fix meta box not showing when post formats not supported
 = 2.0.2 =
 *   Add widget area to page
 *	Remove meta box when post type or post format is excluded.
-
 == ChangeLog ==
 = 2.0.1 =
 *   Fix Uninstall issue
-
 =======
 = 2.0.0 =
 *   Add settings page to allow exclusion by post type and post format
-
-
 =======
 = 1.0.2 =
 *   Changed widget ids to classes so you can add two widgets after the content. 
-
 =======
 = 1.0.0 =
 *   First release
 
-== Upgrade Notice ==
-There is no need to upgrade just yet.
 

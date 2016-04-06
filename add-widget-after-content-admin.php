@@ -57,7 +57,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				'awac-options', 
 				array($this, 'awac_options_display')
 			);
-
+			
 		}
 
 		/**
@@ -77,6 +77,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			<div class="wrap">
 				
 				<h2><span class="dashicons dashicons-admin-settings"></span>Add Widget After Content Options</h2>
+				<div class="notice notice-success is-dismissible" style="padding: 9px; " >Now you can add AWAC <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/">after comments</a> or add AWAC <a target="_blank" href="https://pintopsolutions.com/downloads/awac-page-builder/">after content generated using Page Builder</a> by SiteOrigin. <a target="_blank" href="https://pintopsolutions.com/downloads/category/wordpress-plugin/add-widget-after-content-addon/">View Addons</a></div>
 				<form method="post" action="options.php">
 					<?php
 						settings_fields( 'exclude_section' );
@@ -85,10 +86,17 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 
 					?>
 				</form>
+				
 			</div>
 
 		<?php	
+
+		/*require plugin_dir_path( __FILE__ ) . 'partials/awac-options-display.php';*/
 		}
+
+
+
+
 
 		/**
 		 * Registers settings fields 
@@ -124,6 +132,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				'exclude_section', 
 				'all_post_formats'
 			);
+
 		}
 
 
@@ -197,7 +206,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 
 			if ( $currentScreen->id == 'appearance_page_awac-options' ) {
 				$rate_text = sprintf( __( 'Thank you for using <a href="%1$s" target="_blank">Add Widget After Content</a>! Please <a href="%2$s" target="_blank">rate us</a> on <a href="%2$s" target="_blank">WordPress.org</a>',  $this->plugin_name ),
-					'https://www.pintopproductions.com/product/add-widget-content/',
+					'https://pintopsolutions.com/downloads/add-widget-after-content/',
 					'https://wordpress.org/support/view/plugin-reviews/add-widget-after-content?filter=5#postform'
 				);
 

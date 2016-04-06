@@ -4,21 +4,19 @@
  * @package   Add Widget After Content
  * @author    Arelthia Phillips
  * @license   GPL-3.0+
- * @link      https://www.pintopproductions.com/product/add-widget-content/
- * @copyright Copyright (C) 2014 Arelthia Phillips
+ * @link      https://pintopsolutions.com/downloads/add-widget-after-content/
+ * @copyright Copyright (C) 2014-2016 Arelthia Phillips
  *
  * Plugin Name: 		Add Widget After Content
- * Description: 		This plugin adds a widget area after post content before the comments. You can also tell it not to display on a specific post. 
- * Plugin URI: 			https://www.pintopproductions.com/product/add-widget-content/
+ * Description: 		This plugin adds a widget area after post content before the comments. You can also tell it not to display on a specific post or post format. 
+ * Plugin URI: 			https://pintopsolutions.com/downloads/add-widget-after-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			2.0.3
+ * Version: 			2.1
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
  * Domain Path:       	/languages
- * GitHub Plugin URI: 	https://github.com/pintop/add-widget-after-content
- * GitHub Branch:     	master
  */
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -27,11 +25,13 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'AWAC_PLUGIN_DIR',         plugin_dir_path( __FILE__ ) );
 define( 'AWAC_PLUGIN_FILE',        __FILE__ );
 
+
+
+require_once(AWAC_PLUGIN_DIR . 'add-widget-after-content-admin.php');
+
 if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 	
-	require_once(AWAC_PLUGIN_DIR . 'add-widget-after-content-admin.php');
-
-
+	
 	/**
 	 * @package AddWidgetAfterContent
 	 * @author  Arelthia Phillips
@@ -48,7 +48,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @var      string
 		 */
 		protected $plugin_slug = 'add-widget-after-content';
-		protected $plugin_version = '2.0.1';
+		protected $plugin_version = '2.1';
 		protected $settings;
 		/**
 		 * Initialize the plugin 
@@ -57,14 +57,13 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 */
 		function __construct() {
 
-		
-
 			add_action( 'init', array( $this, 'load_textdomain' ) );
 			add_action(	'widgets_init', array( $this,'register_sidebar'));
 			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
 			add_action( 'save_post', array( $this,'after_content_save_meta') );
-			add_filter(	'the_content', array( $this,'insert_after_content'));
+			add_filter(	'the_content', array( $this,'insert_after_content'), 10);
 			$this->settings = new AddWidgetAfterContentAdmin($this->plugin_slug, $this->plugin_version );
+
 		}
 
 		/**
@@ -135,7 +134,8 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		  
 		   //if this is a single page or post and the widget is not set to be hide
 		   if( is_singular() &&  $ps_hide_widget != 1 ) {
-		      $content.= $this->get_after_content();
+		      $awac_content = $this->get_after_content();
+		      $content.= apply_filters('awac_content', $awac_content );
 		   }
 		   return $content;
 		}
@@ -220,6 +220,12 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 
 		}
+
+
+		function add_integrations(){
+			
+		}
+
 	}//end class AddWidgetAfterContent
 
 }//end check for class
@@ -241,5 +247,5 @@ if( class_exists( 'AddWidgetAfterContent' ) ) {
 	/**
 	 * instantiate the plugin class  
 	 */
-	$wp_plugin_template = new AddWidgetAfterContent(); 
+	$AWAC = new AddWidgetAfterContent(); 
 }
