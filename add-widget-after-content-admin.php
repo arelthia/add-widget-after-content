@@ -77,7 +77,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			<div class="wrap">
 				
 				<h2><span class="dashicons dashicons-admin-settings"></span>Add Widget After Content Options</h2>
-				<div class="notice notice-success is-dismissible" style="padding: 9px; " >Now you can add AWAC <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/">after comments</a> or add AWAC <a target="_blank" href="https://pintopsolutions.com/downloads/awac-page-builder/">after content generated using Page Builder</a> by SiteOrigin. <a target="_blank" href="https://pintopsolutions.com/downloads/category/wordpress-plugin/add-widget-after-content-addon/">View Addons</a></div>
+				<div class="notice notice-success is-dismissible" style="padding: 9px; " >Now you can add AWAC <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/">after comments</a>. <a target="_blank" href="https://pintopsolutions.com/downloads/category/wordpress-plugin/add-widget-after-content-addon/">View Addons</a></div>
 				<form method="post" action="options.php">
 					<?php
 						settings_fields( 'exclude_section' );

@@ -12,7 +12,7 @@
  * Plugin URI: 			https://pintopsolutions.com/downloads/add-widget-after-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			2.1
+ * Version: 			2.1.2
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
@@ -48,7 +48,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @var      string
 		 */
 		protected $plugin_slug = 'add-widget-after-content';
-		protected $plugin_version = '2.1';
+		protected $plugin_version = '2.1.2';
 		protected $settings;
 		/**
 		 * Initialize the plugin 
@@ -61,7 +61,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			add_action(	'widgets_init', array( $this,'register_sidebar'));
 			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
 			add_action( 'save_post', array( $this,'after_content_save_meta') );
-			add_filter(	'the_content', array( $this,'insert_after_content'), 10);
+			add_filter(	'the_content', array( $this,'insert_after_content'), 89);
 			$this->settings = new AddWidgetAfterContentAdmin($this->plugin_slug, $this->plugin_version );
 
 		}
