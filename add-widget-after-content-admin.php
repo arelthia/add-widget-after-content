@@ -66,32 +66,16 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		 */
 		public static function uninstall() {
 		    delete_option( 'all_post_types' );
-			delete_option( 'all_post_formats' );    
+			delete_option( 'all_post_formats' );
+			delete_option('awac_priority');
 		}
 
 		/**
 	 	 * Renders the content of the awac options page  
 	 	 */
 		public function awac_options_display(){
-		?>
-			<div class="wrap">
-				
-				<h2><span class="dashicons dashicons-admin-settings"></span>Add Widget After Content Options</h2>
-				<div class="notice notice-success is-dismissible" style="padding: 9px; " >Now you can add AWAC <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/">after comments</a>. <a target="_blank" href="https://pintopsolutions.com/downloads/category/wordpress-plugin/add-widget-after-content-addon/">View Addons</a></div>
-				<form method="post" action="options.php">
-					<?php
-						settings_fields( 'exclude_section' );
-						do_settings_sections( 'awac-options' );
-						submit_button();
 
-					?>
-				</form>
-				
-			</div>
-
-		<?php	
-
-		/*require plugin_dir_path( __FILE__ ) . 'partials/awac-options-display.php';*/
+		require plugin_dir_path( __FILE__ ) . 'partials/awac-options-display.php';
 		}
 
 
@@ -133,6 +117,39 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				'all_post_formats'
 			);
 
+			add_settings_field(
+				'awac_priority',
+				__('Widget Priority<p class="description"></p>', $this->plugin_name ),
+				array($this, 'awac_priority_display'),
+				'awac-options',
+				'exclude_section',
+				array('type'=>'radio')
+
+			);
+			register_setting(
+				'exclude_section',
+				'awac_priority'
+			);
+
+
+		}
+
+
+		public function awac_priority_display(){
+			$option = get_option('awac_priority');
+			?>
+			<div>
+				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 10 ); ?> value='10'>
+					10
+				</label>
+			</div>
+			<div>
+				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 99 ); ?> value='99'>
+					89
+				</label>
+			</div>
+			
+<?php
 		}
 
 

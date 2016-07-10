@@ -1,4 +1,6 @@
 <?php
+//ini_set('log_errors', true);
+//ini_set('error_log', dirname(__FILE__).'/awac_errors.log');
 /**
  *
  * @package   Add Widget After Content
@@ -12,7 +14,7 @@
  * Plugin URI: 			https://pintopsolutions.com/downloads/add-widget-after-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			2.1.2
+ * Version: 			2.2
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
@@ -48,7 +50,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @var      string
 		 */
 		protected $plugin_slug = 'add-widget-after-content';
-		protected $plugin_version = '2.1.2';
+		protected $plugin_version = '2.2';
 		protected $settings;
 		/**
 		 * Initialize the plugin 
@@ -61,9 +63,10 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			add_action(	'widgets_init', array( $this,'register_sidebar'));
 			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
 			add_action( 'save_post', array( $this,'after_content_save_meta') );
-			add_filter(	'the_content', array( $this,'insert_after_content'), 89);
+			add_filter(	'the_content', array( $this,'insert_after_content'), $this->get_content_filter_priority());
 			$this->settings = new AddWidgetAfterContentAdmin($this->plugin_slug, $this->plugin_version );
 
+			
 		}
 
 		/**
@@ -71,7 +74,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * 
 		 */
 		public static function activate() {
-		   		    
+			update_option('awac_priority', '10');
 		}
 
 		/**
@@ -82,12 +85,21 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		    delete_post_meta_by_key( '_awac_hide_widget' );
 		    unregister_sidebar( 'add-widget-after-content' );
 		}
-		
+
+		/**
+		 * Get the priority to use when filtering the content
+		 */
+		private function get_content_filter_priority(){
+
+			return get_option('awac_priority');
+
+		}
+
 		/**
 		 * Register the widget area/sidebar that will go after the content
 		 * 
 		 */
-		function register_sidebar() {
+		public function register_sidebar() {
 			register_sidebar( array(
 	                'id' => 'add-widget-after-content',
 	                'name' => __( 'After Content' ),
@@ -111,7 +123,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @param  string $content content of the current post
 		 * @return $content the post content plus the widget area content
 		 */
-		function insert_after_content( $content ) {
+		public function insert_after_content( $content ) {
 
 			$exclude_format = (array)get_option('all_post_formats');
 			$exclude_type = (array)get_option('all_post_types');
@@ -144,7 +156,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * Get what ever is to be in the widget area, but don't display it yet
 		 * @return string the content of the add-widget-after-content sidebar/widget
 		 */
-		function get_after_content() {
+		private function get_after_content() {
 			ob_start();
 			dynamic_sidebar( 'add-widget-after-content' ); 
 			$sidebar = ob_get_contents();
@@ -155,7 +167,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		/**
 		 * Add a meta box to admin pages that are not excluded
 		 */
-		function after_content_create_metabox( $post_type ) {
+		public function after_content_create_metabox( $post_type ) {
 
 			//get all excluded post types
 			$exclude_type = (array)get_option('all_post_types');
@@ -179,7 +191,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * Fills the Widget After Content metabox with its content
 		 * @param  object $post the post object for the post
 		 */
-		function after_content_metabox( $post ) {
+		public function after_content_metabox( $post ) {
 			
 			$ps_hide_widget = get_post_meta( $post->ID, '_awac_hide_widget', true ); 
 			$status = checked( $ps_hide_widget, 1, false );
@@ -196,7 +208,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * Saves _awac_hide_widget when the post is saved
 		 * @param  int $post_id the id of the current post being saved
 		 */
-		function after_content_save_meta( $post_id) {
+		public function after_content_save_meta( $post_id) {
     
 		    //only do if post meta is set
 		    if ( isset( $_POST['ps_hide_widget'] ) ){
