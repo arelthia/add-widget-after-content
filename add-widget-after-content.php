@@ -100,7 +100,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * 
 		 */
 		public function register_sidebar() {
-			register_sidebar( array(
+			$args = array(
 	                'id' => 'add-widget-after-content',
 	                'name' => __( 'After Content' ),
 	                'description' => __( 'This widget section shows after the content, but before comments on single post pages', $this->plugin_slug ),
@@ -108,7 +108,9 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 	                'after_widget' => '</div></div>',
 	                'before_title' => '<h4 class="widget-title">',
 	                'after_title' => '</h4>'
-	    	) );
+	    	);
+
+			register_sidebar( apply_filters( 'awac_sidebar_arguments', $args ) );
 		} 
 
 		/**
@@ -200,7 +202,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			$html .= esc_attr( $status );
 			$html .='/></p>';
 
-			echo $html;       
+			echo apply_filters( 'awac_metabox_content', $html );       
 		}
 
 
@@ -216,6 +218,8 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		    } else {
 		        update_post_meta( $post_id, '_awac_hide_widget', FALSE );
 		    }
+
+		    do_action( 'awac_after_save_meta');
 
 		} 	
 
@@ -234,9 +238,9 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		}
 
 
-		function add_integrations(){
+		/*function add_integrations(){
 			
-		}
+		}*/
 
 	}//end class AddWidgetAfterContent
 
