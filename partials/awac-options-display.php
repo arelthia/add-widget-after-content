@@ -35,6 +35,7 @@
                 </div>
             </div>
         </div>
+
         <div id="post-body" class="has-sidebar">
             <div id="post-body-content" class="has-sidebar-content">
                 <div id="normal-sortables" class="meta-box-sortables">
@@ -44,7 +45,7 @@
                             <h2 class="hndle"><?php _e( 'Settings', 'link-timestamp' ); ?></h2>
                             <form method="post" action="options.php">
                                 <?php
-                                settings_fields( 'exclude_section' );
+                                settings_fields( 'main' );
                                 do_settings_sections( 'awac-options' );
                                 if ( ! class_exists( 'AWAC_comments' ) ) {
                                     $url1 = 'https://pintopsolutions.com/downloads/awac-comments/';
@@ -63,6 +64,7 @@
                 </div>
             </div>
         </div>
+        <?php do_action( 'ps_lts_settings_bottom' ); ?>
     </div>
 
 <?php

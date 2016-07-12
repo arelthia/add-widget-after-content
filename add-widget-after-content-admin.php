@@ -87,9 +87,9 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		 */
 		public function awac_initialize_options(){
 			add_settings_section(
-				'exclude_section', 
+				'main', 
 				__('Where to show the widget', $this->plugin_name), 
-				array($this, 'awac_exclude_options_display'), 
+				array($this, 'awac_main_section_display'), 
 				'awac-options',
 				array('class'=>'subtitle')
 			);
@@ -98,10 +98,10 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				__('Post Types<p class="description">The widget will not show on post types that are checked</p>', $this->plugin_name ), 
 				array($this, 'awac_type_boxes_display'), 
 				'awac-options',
-				'exclude_section'
+				'main'
 			);
 			register_setting(
-				'exclude_section', 
+				'main', 
 				'all_post_types'
 			);
 			add_settings_field(
@@ -109,11 +109,11 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				__('Post Formats<p class="description">The widget will not show on post formats that are checked</p>', $this->plugin_name ), 
 				array($this, 'awac_formats_boxes_display'), 
 				'awac-options',
-				'exclude_section'
+				'main'
 				
 			);
 			register_setting(
-				'exclude_section', 
+				'main', 
 				'all_post_formats'
 			);
 
@@ -122,12 +122,12 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				__('Widget Priority<p class="description"></p>', $this->plugin_name ),
 				array($this, 'awac_priority_display'),
 				'awac-options',
-				'exclude_section',
+				'main',
 				array('type'=>'radio')
 
 			);
 			register_setting(
-				'exclude_section',
+				'main',
 				'awac_priority'
 			);
 
@@ -154,10 +154,10 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 
 
 		/**
-		 * Description for the exclude_section
+		 * Description for the main
 		 *
 		 */
-		public function awac_exclude_options_display(){
+		public function awac_main_section_display(){
 			echo __('<p>By default the widget will display on all posts. Use the options below to prevent the widget from showing on a specific post type or post format.</p>', $this->plugin_name  );
 		}
 
