@@ -74,7 +74,9 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * 
 		 */
 		public static function activate() {
+			
 			update_option('awac_priority', '10');
+			update_option('extensions', array());
 		}
 
 		/**
@@ -82,6 +84,8 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * 
 		 */
 		public static function uninstall() {
+			delete_option( 'awac_priority' );
+			delete_option( 'extensions' );
 		    delete_post_meta_by_key( '_awac_hide_widget' );
 		    unregister_sidebar( 'add-widget-after-content' );
 		}
@@ -89,7 +93,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		/**
 		 * Get the priority to use when filtering the content
 		 */
-		private function get_content_filter_priority(){
+		public function get_content_filter_priority(){
 
 			return get_option('awac_priority');
 
@@ -120,45 +124,67 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			return $this->plugin_slug;
 		}
 
+
+		/**
+		 * Determines if the widget area should show on the current post/page
+		 * @param  int $post_id The id of the current post
+		 * @return bool   false if should not show or true if it should show
+		 */
+		public function show_awac($post_id){
+			$exclude_format = (array)get_option('all_post_formats');
+			$exclude_type = (array)get_option('all_post_types');
+			$ps_type = get_post_type( $post_id );
+			$ps_format = get_post_format();
+			
+			if(!is_singular()){ 
+		   		return false;
+		   	}
+			
+			//should the widget be shown after the content
+		   $ps_hide_widget = get_post_meta( get_the_ID(), '_awac_hide_widget', true ); 
+		   if( $ps_hide_widget ){ 
+		   		return false;
+		   	}
+
+			if ( false === $ps_format ) {
+				$ps_format = 'standard';
+			}
+
+			if(isset($exclude_type[$ps_type]) == 1){
+				return false;
+			}	
+			
+
+			if(isset($exclude_format[$ps_format]) == 1){
+				return false;
+			}	
+			
+
+			return(true);
+			
+
+		   
+		}
+
+
 		/**
 		 * Add the widget after the post content if the widget is not set to be hide
 		 * @param  string $content content of the current post
 		 * @return $content the post content plus the widget area content
 		 */
 		public function insert_after_content( $content ) {
-
-			$exclude_format = (array)get_option('all_post_formats');
-			$exclude_type = (array)get_option('all_post_types');
-			$ps_type = get_post_type( get_the_ID() );
-			$ps_format = get_post_format();
-			if ( false === $ps_format ) {
-				$ps_format = 'standard';
+			if($this->show_awac(get_the_ID())){
+				$awac_content = $this->get_after_content();
+		    	$content.= apply_filters('awac_content', $awac_content );
 			}
-
-			if(isset($exclude_type[$ps_type]) == 1){
-				return $content;
-			}
-
-			if(isset($exclude_format[$ps_format]) == 1){
-				return $content;
-			}
-
-		   //should the widget be shown after the content
-		   $ps_hide_widget = get_post_meta( get_the_ID(), '_awac_hide_widget', true ); 
-		  
-		   //if this is a single page or post and the widget is not set to be hide
-		   if( is_singular() &&  $ps_hide_widget != 1 ) {
-		      $awac_content = $this->get_after_content();
-		      $content.= apply_filters('awac_content', $awac_content );
-		   }
-		   return $content;
+		   	return $content;
 		}
 
 		/**
 		 * Get what ever is to be in the widget area, but don't display it yet
 		 * @return string the content of the add-widget-after-content sidebar/widget
 		 */
-		private function get_after_content() {
+		public function get_after_content() {
 			ob_start();
 			dynamic_sidebar( 'add-widget-after-content' ); 
 			$sidebar = ob_get_contents();
@@ -238,9 +264,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		}
 
 
-		/*function add_integrations(){
-			
-		}*/
+		
 
 	}//end class AddWidgetAfterContent
 
