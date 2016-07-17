@@ -131,10 +131,10 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				'awac_styles', 
 				__( 'Styles', $this->plugin_name ),
 				array($this, 'awac_styles_section_display'), 
-				'awac_styles'
+				'styles'
 				);
 
-				register_setting( 'awac_styles', 'awac_styles' );
+				register_setting( 'styles', 'awac_styles' );
 			}
 
 	/*		if( ! empty( $settings['licenses'] ) ) {
@@ -153,10 +153,10 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				'awac_misc', 
 				__( 'Misc', $this->plugin_name ),
 				 array($this, 'awac_misc_section_display'), 
-				'awac_misc'
+				'misc'
 				);
 
-				register_setting( 'awc_misc', 'awac_misc' );
+				register_setting( 'misc', 'awac_misc' );
 			}
 
 
@@ -297,7 +297,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		public function awac_get_tabs($extension_settings){
 			$tabs['awac_basic']  = __( 'General', $this->plugin_name );
 			if( ! empty( $extension_settings['styles'] ) ) {
-				$tabs['styles'] = __( 'styles', $this->plugin_name );
+				$tabs['styles'] = __( 'Styles', $this->plugin_name );
 			}
 			/*if( ! empty( $extension_settings['licenses'] ) ) {
 				$tabs['licenses'] = __( 'Licenses', $this->plugin_name );
