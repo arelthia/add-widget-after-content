@@ -17,6 +17,19 @@
     <h2><span class="dashicons dashicons-admin-settings"></span>Add Widget After Content Options</h2>
     <hr/>
 <?php do_action( 'ps_lts_settings_top' ); ?>
+    
+    <?php 
+        if( isset( $_GET[ 'tab' ] ) ) {
+            $active_tab = $_GET[ 'tab' ];
+        }else {
+            $active_tab = 'basic';
+        } 
+    ?>
+
+    <?php foreach ($tabs as $tab => $value) { ?>
+<a href="?page=awac-options&tab=<?php echo $tab?>" class="nav-tab <?php echo $tab == $active_tab ? 'nav-tab-active' : ''; ?>"><?php echo $value ?></a>
+ <?php   }  ?>
+
     <div id="ps_admin" class="metabox-holder has-right-sidebar">
         <div class="inner-sidebar">
 
@@ -42,11 +55,12 @@
 
                     <div class="postbox">
                         <div class="inside">
-                            <h2 class="hndle"><?php _e( 'Settings', 'link-timestamp' ); ?></h2>
+                            <!-- <h2 class="hndle"><?php /* echo $tabs[$active_tab]*/  ?></h2> -->
                             <form method="post" action="options.php">
                                 <?php
-                                settings_fields( 'main' );
-                                do_settings_sections( 'awac-options' );
+                                settings_fields( $active_tab );
+                                $section = ('basic' == $active_tab) ? 'awac-options' : $active_tab; 
+                                do_settings_sections( $section );
                                 if ( ! class_exists( 'AWAC_comments' ) ) {
                                     $url1 = 'https://pintopsolutions.com/downloads/awac-comments/';
                                     $link1       = sprintf( __( '<strong>Show After Comments</strong> - Now you can add AWAC after comments. <a href=%s>Learn More</a>', 'link-timestamp' ), esc_url( $url1 ) );
@@ -56,7 +70,7 @@
 
                                 ?>
                             </form>
-<div class="clear"></div>
+                            <div class="clear"></div>
                         </div>
                     </div>
 
@@ -66,7 +80,3 @@
         </div>
         <?php do_action( 'ps_lts_settings_bottom' ); ?>
     </div>
-
-<?php
-
-

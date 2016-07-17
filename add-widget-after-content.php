@@ -79,21 +79,11 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			update_option('extensions', array());
 		}
 
-		/**
-		 * Fired when the plugin is uninstalled
-		 * 
-		 */
-		public static function uninstall() {
-			delete_option( 'awac_priority' );
-			delete_option( 'extensions' );
-		    delete_post_meta_by_key( '_awac_hide_widget' );
-		    unregister_sidebar( 'add-widget-after-content' );
-		}
 
 		/**
 		 * Get the priority to use when filtering the content
 		 */
-		public function get_content_filter_priority(){
+		public static function get_content_filter_priority(){
 
 			return get_option('awac_priority');
 
@@ -130,7 +120,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @param  int $post_id The id of the current post
 		 * @return bool   false if should not show or true if it should show
 		 */
-		public function show_awac($post_id){
+		public static function show_awac($post_id){
 			$exclude_format = (array)get_option('all_post_formats');
 			$exclude_type = (array)get_option('all_post_types');
 			$ps_type = get_post_type( $post_id );
@@ -282,7 +272,7 @@ if( class_exists( 'AddWidgetAfterContent' ) ) {
 	/**
 	 * Register callback to be fired when plugin is uninstalled
 	 */
-	register_uninstall_hook(  __FILE__, array( 'AddWidgetAfterContent','uninstall' ) );
+	//register_uninstall_hook(  __FILE__, array( 'AddWidgetAfterContent','uninstall' ) );
 
 	/**
 	 * instantiate the plugin class  

@@ -30,6 +30,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		 */
 		private $version;
 
+
 		
 		/**
 		 * Initialize the settings page
@@ -60,22 +61,13 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			
 		}
 
-		/**
-		 * Fired when the plugin is uninstalled
-		 * 
-		 */
-		public static function uninstall() {
-		    delete_option( 'all_post_types' );
-			delete_option( 'all_post_formats' );
-			delete_option('awac_priority');
-		}
-
+	
 		/**
 	 	 * Renders the content of the awac options page  
 	 	 */
 		public function awac_options_display(){
-
-		require plugin_dir_path( __FILE__ ) . 'partials/awac-options-display.php';
+			$tabs = $this->awac_get_tabs($this->awac_get_extension_settings());
+			require plugin_dir_path( __FILE__ ) . 'partials/awac-options-display.php';
 		}
 
 
@@ -87,9 +79,9 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		 */
 		public function awac_initialize_options(){
 			add_settings_section(
-				'main', 
+				'awac_basic', 
 				__('Where to show the widget', $this->plugin_name), 
-				array($this, 'awac_main_section_display'), 
+				array($this, 'awac_basic_section_display'), 
 				'awac-options',
 				array('class'=>'subtitle')
 			);
@@ -98,10 +90,10 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				__('Post Types<p class="description">The widget will not show on post types that are checked</p>', $this->plugin_name ), 
 				array($this, 'awac_type_boxes_display'), 
 				'awac-options',
-				'main'
+				'awac_basic'
 			);
 			register_setting(
-				'main', 
+				'awac_basic', 
 				'all_post_types'
 			);
 			add_settings_field(
@@ -109,11 +101,11 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				__('Post Formats<p class="description">The widget will not show on post formats that are checked</p>', $this->plugin_name ), 
 				array($this, 'awac_formats_boxes_display'), 
 				'awac-options',
-				'main'
+				'awac_basic'
 				
 			);
 			register_setting(
-				'main', 
+				'awac_basic', 
 				'all_post_formats'
 			);
 
@@ -122,15 +114,64 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				__('Widget Priority<p class="description"></p>', $this->plugin_name ),
 				array($this, 'awac_priority_display'),
 				'awac-options',
-				'main',
+				'awac_basic',
 				array('type'=>'radio')
 
 			);
 			register_setting(
-				'main',
+				'awac_basic',
 				'awac_priority'
 			);
 
+
+			//add settings created by styles
+			$settings = $this->awac_get_extension_settings();
+			if( ! empty( $settings['styles'] ) ) {
+				add_settings_section(
+				'awac_styles', 
+				__( 'Styles', $this->plugin_name ),
+				array($this, 'awac_styles_section_display'), 
+				'awac_styles'
+				);
+
+				register_setting( 'awac_styles', 'awac_styles' );
+			}
+
+	/*		if( ! empty( $settings['licenses'] ) ) {
+				add_settings_section(
+				'awac_licenses', 
+				 __( 'Licenses', $this->plugin_name ),
+				 array($this, 'awac_licenses_section_display'), 
+				'awac_licenses'
+				);
+
+				register_setting( 'awac_licenses', 'awac_licenses' );
+			}*/
+
+			if( ! empty( $settings['awac_misc'] ) ) {
+				add_settings_section(
+				'awac_misc', 
+				__( 'Misc', $this->plugin_name ),
+				 array($this, 'awac_misc_section_display'), 
+				'awac_misc'
+				);
+
+				register_setting( 'awc_misc', 'awac_misc' );
+			}
+
+
+
+
+		}
+
+		public function awac_styles_section_display(){
+
+		}
+
+	/*	public function awac_licenses_section_display(){
+
+		}*/
+		public function awac_misc_section_display(){
 
 		}
 
@@ -154,10 +195,10 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 
 
 		/**
-		 * Description for the main
+		 * Description for the basic
 		 *
 		 */
-		public function awac_main_section_display(){
+		public function awac_basic_section_display(){
 			echo __('<p>By default the widget will display on all posts. Use the options below to prevent the widget from showing on a specific post type or post format.</p>', $this->plugin_name  );
 		}
 
@@ -217,7 +258,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		 * @param  string $text wordpress admin footer text
 		 * @return string       updated footer text 
 		 */
-		function awac_display_admin_footer($text) {
+		public function awac_display_admin_footer($text) {
 
 			$currentScreen = get_current_screen();
 
@@ -232,6 +273,42 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				return $text;
 			}
 		}
+
+
+		/**
+		 * Get the settings added by styles using filters
+		 * @return array [description]
+		 */
+		public function awac_get_extension_settings(){
+			$styles = get_option( 'awac_styles');
+			//$license = get_option( 'awac_licenses');
+			//$misc = get_option( 'awac_misc');
+			$extension_settings['styles'] = apply_filters('awac_settings_styles', $styles);
+			//$extension_settings['licenses'] = apply_filters('awac_settings_licenses', $license);
+			//$extension_settings['misc'] = apply_filters('awac_settings_misc', $misc);
+
+			update_option( 'awac_styles',$extension_settings['styles'] );
+			return $extension_settings;
+		}
+
+
+
+
+		public function awac_get_tabs($extension_settings){
+			$tabs['awac_basic']  = __( 'General', $this->plugin_name );
+			if( ! empty( $extension_settings['styles'] ) ) {
+				$tabs['styles'] = __( 'styles', $this->plugin_name );
+			}
+			/*if( ! empty( $extension_settings['licenses'] ) ) {
+				$tabs['licenses'] = __( 'Licenses', $this->plugin_name );
+			}
+			if( ! empty( $extension_settings['misc'] ) ) {
+				$tabs['misc'] = __( 'Misc', $this->plugin_name );
+			}
+*/
+			return $tabs; 
+		}
+
 
 	} /*End class AddWidgetAfterContentAdmin*/
 
