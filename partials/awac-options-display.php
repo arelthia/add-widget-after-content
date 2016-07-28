@@ -22,7 +22,7 @@
         if( isset( $_GET[ 'tab' ] ) ) {
             $active_tab = $_GET[ 'tab' ];
         }else {
-            $active_tab = 'basic';
+            $active_tab = 'awac_basic';
         } 
     ?>
 
@@ -36,7 +36,7 @@
             <div class="meta-box-sortables">
                 <div class="postbox">
                     <div class="inside">
-                        <p><?php $url2 = 'https://https://pintopsolutions.com/contact/';
+                        <p><?php $url2 = 'https://pintopsolutions.com/contact/';
                             $link2     = sprintf( __( 'Need help? Or have an idea how this plugin can be made better. Reach out <a href=%s>on our website?</a>', $this->plugin_name ), esc_url( $url2 ) );
                             echo $link2; ?></p>
 

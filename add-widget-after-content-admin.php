@@ -137,16 +137,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				register_setting( 'styles', 'awac_styles' );
 			}
 
-	/*		if( ! empty( $settings['licenses'] ) ) {
-				add_settings_section(
-				'awac_licenses', 
-				 __( 'Licenses', $this->plugin_name ),
-				 array($this, 'awac_licenses_section_display'), 
-				'awac_licenses'
-				);
 
-				register_setting( 'awac_licenses', 'awac_licenses' );
-			}*/
 
 			if( ! empty( $settings['awac_misc'] ) ) {
 				add_settings_section(
@@ -168,9 +159,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 
 		}
 
-	/*	public function awac_licenses_section_display(){
 
-		}*/
 		public function awac_misc_section_display(){
 
 		}
@@ -278,34 +267,49 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		/**
 		 * Get the settings added by styles using filters
 		 * @return array [description]
+		 *
+		 * Other plugins can add to the awac_extensions setting during plugin activation
+		 * $extensions =  get_option('awac_extensions');
+		 * update_option('awac_extensions', extensionClass::register_awac_comments($extensions) );
+		 *
+		 * Plugins should
+		 * public static function deactivate(){
+		 * $extensions = get_option('awac_extensions');
+		 * if(isset($extensions['awac_basic']['awac-comments'])) {
+		 * unset($extensions['awac_basic']['awac-comments']);
+		 * update_option('awac_extensions', $extensions);}}
+		 *
+		 *
+		 * public static function register_awac_comments($extensions){
+		 * $extensions['TAB']['extension-id']['id']= 'extension-id';
+		 * $extensions['TAB']['extension-id']['name']= 'Extension Name';
+		 * $extensions['TAB']['extension-id']['description']= 'Extension Description.';
+		 * return $extensions;}
+		 *
+		 * TAB options are awac_basic, styles, misc currently
 		 */
 		public function awac_get_extension_settings(){
-			$styles = get_option( 'awac_styles');
-			//$license = get_option( 'awac_licenses');
-			//$misc = get_option( 'awac_misc');
-			$extension_settings['styles'] = apply_filters('awac_settings_styles', $styles);
-			//$extension_settings['licenses'] = apply_filters('awac_settings_licenses', $license);
-			//$extension_settings['misc'] = apply_filters('awac_settings_misc', $misc);
+			$extensions = get_option( 'awac_extensions');
 
-			update_option( 'awac_styles',$extension_settings['styles'] );
-			return $extension_settings;
+			return $extensions;
 		}
 
 
-
+		/**
+		 * @param $extension_settings
+		 * @return mixed
+		 */
 
 		public function awac_get_tabs($extension_settings){
 			$tabs['awac_basic']  = __( 'General', $this->plugin_name );
 			if( ! empty( $extension_settings['styles'] ) ) {
 				$tabs['styles'] = __( 'Styles', $this->plugin_name );
 			}
-			/*if( ! empty( $extension_settings['licenses'] ) ) {
-				$tabs['licenses'] = __( 'Licenses', $this->plugin_name );
-			}
+
 			if( ! empty( $extension_settings['misc'] ) ) {
 				$tabs['misc'] = __( 'Misc', $this->plugin_name );
 			}
-*/
+
 			return $tabs; 
 		}
 
