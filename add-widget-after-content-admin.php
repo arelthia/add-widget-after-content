@@ -66,10 +66,58 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 	 	 * Renders the content of the awac options page  
 	 	 */
 		public function awac_options_display(){
+			//Get the tabs that need to be displayed
 			$tabs = $this->awac_get_tabs($this->awac_get_extension_settings());
 			require plugin_dir_path( __FILE__ ) . 'partials/awac-options-display.php';
 		}
 
+        /**
+         * Get the settings added by styles using filters
+         * @return array of extensions
+         *
+         * Other plugins can add to the awac_extensions setting during plugin activation
+         * $extensions =  get_option('awac_extensions');
+         * update_option('awac_extensions', extensionClass::register_awac_comments($extensions) );
+         *
+         * Plugins should
+         * public static function deactivate(){
+         * $extensions = get_option('awac_extensions');
+         * if(isset($extensions['awac_basic']['awac-comments'])) {
+         * unset($extensions['awac_basic']['awac-comments']);
+         * update_option('awac_extensions', $extensions);}}
+         *
+         *
+         * public static function register_awac_comments($extensions){
+         * $extensions['TAB']['extension-id']['id']= 'extension-id';
+         * $extensions['TAB']['extension-id']['name']= 'Extension Name';
+         * $extensions['TAB']['extension-id']['description']= 'Extension Description.';
+         * return $extensions;}
+         *
+         * TAB options are awac_basic, styles, misc
+         */
+        public function awac_get_extension_settings(){
+            $extensions = get_option( 'awac_extensions');
+
+            return $extensions;
+        }
+
+
+        /**
+         * @param $extension_settings
+         * @return mixed
+         */
+        public function awac_get_tabs($extension_settings){
+            $tabs['awac_basic']  = __( 'General', $this->plugin_name );
+            if( ! empty( $extension_settings['styles'] ) ) {
+                $tabs['styles'] = __( 'Styles', $this->plugin_name );
+            }
+
+            if( ! empty( $extension_settings['misc'] ) ) {
+                $tabs['misc'] = __( 'Misc', $this->plugin_name );
+            }
+
+            return $tabs;
+        }
 
 
 
@@ -124,7 +172,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			);
 
 
-			//add settings created by styles
+			//add settings created to show on the styles tab
 			$settings = $this->awac_get_extension_settings();
 			if( ! empty( $settings['styles'] ) ) {
 				add_settings_section(
@@ -138,7 +186,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			}
 
 
-
+			//add settings created to show on the misc tab
 			if( ! empty( $settings['awac_misc'] ) ) {
 				add_settings_section(
 				'awac_misc', 
@@ -150,37 +198,16 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 				register_setting( 'misc', 'awac_misc' );
 			}
 
-
-
-
 		}
 
 		public function awac_styles_section_display(){
 
 		}
 
-
 		public function awac_misc_section_display(){
 
 		}
 
-
-		public function awac_priority_display(){
-			$option = get_option('awac_priority');
-			?>
-			<div>
-				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 10 ); ?> value='10'>
-					10
-				</label>
-			</div>
-			<div>
-				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 99 ); ?> value='99'>
-					89
-				</label>
-			</div>
-			
-<?php
-		}
 
 
 		/**
@@ -188,8 +215,9 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		 *
 		 */
 		public function awac_basic_section_display(){
-			echo __('<p>By default the widget will display on all posts. Use the options below to prevent the widget from showing on a specific post type or post format.</p>', $this->plugin_name  );
+			//echo __('<p>By default the widget will display on all posts. Use the options below to prevent the widget from showing on a specific post type or post format.</p>', $this->plugin_name  );
 		}
+
 
 		/**
 		 * Display the checkboxes for each post type
@@ -241,78 +269,47 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		
 		}
 
-
 		/**
-		 * Display rate us message in footer only on settings page.
-		 * @param  string $text wordpress admin footer text
-		 * @return string       updated footer text 
+		 * Display the radio buttons for setting the priority of the_content filter insert_after_content
 		 */
-		public function awac_display_admin_footer($text) {
+		public function awac_priority_display(){
+			$option = get_option('awac_priority');
+			?>
+			<div>
+				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 10 ); ?> value='10'>
+					10
+				</label>
+			</div>
+			<div>
+				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 99 ); ?> value='99'>
+					99
+				</label>
+			</div>
 
-			$currentScreen = get_current_screen();
-
-			if ( $currentScreen->id == 'appearance_page_awac-options' ) {
-				$rate_text = sprintf( __( 'Thank you for using <a href="%1$s" target="_blank">Add Widget After Content</a>! Please <a href="%2$s" target="_blank">rate us</a> on <a href="%2$s" target="_blank">WordPress.org</a>',  $this->plugin_name ),
-					'https://pintopsolutions.com/downloads/add-widget-after-content/',
-					'https://wordpress.org/support/view/plugin-reviews/add-widget-after-content?filter=5#postform'
-				);
-
-				return str_replace( '</span>', '', $text ) . ' | ' . $rate_text . '</span>';
-			} else {
-				return $text;
-			}
+			<?php
 		}
 
 
-		/**
-		 * Get the settings added by styles using filters
-		 * @return array [description]
-		 *
-		 * Other plugins can add to the awac_extensions setting during plugin activation
-		 * $extensions =  get_option('awac_extensions');
-		 * update_option('awac_extensions', extensionClass::register_awac_comments($extensions) );
-		 *
-		 * Plugins should
-		 * public static function deactivate(){
-		 * $extensions = get_option('awac_extensions');
-		 * if(isset($extensions['awac_basic']['awac-comments'])) {
-		 * unset($extensions['awac_basic']['awac-comments']);
-		 * update_option('awac_extensions', $extensions);}}
-		 *
-		 *
-		 * public static function register_awac_comments($extensions){
-		 * $extensions['TAB']['extension-id']['id']= 'extension-id';
-		 * $extensions['TAB']['extension-id']['name']= 'Extension Name';
-		 * $extensions['TAB']['extension-id']['description']= 'Extension Description.';
-		 * return $extensions;}
-		 *
-		 * TAB options are awac_basic, styles, misc currently
-		 */
-		public function awac_get_extension_settings(){
-			$extensions = get_option( 'awac_extensions');
+        /**
+         * Display rate us message in footer only on settings page.
+         * @param  string $text wordpress admin footer text
+         * @return string       updated footer text
+         */
+        public function awac_display_admin_footer($text) {
 
-			return $extensions;
-		}
+            $currentScreen = get_current_screen();
 
+            if ( $currentScreen->id == 'appearance_page_awac-options' ) {
+                $rate_text = sprintf( __( 'Thank you for using <a href="%1$s" target="_blank">Add Widget After Content</a>! Please <a href="%2$s" target="_blank">rate us</a> on <a href="%2$s" target="_blank">WordPress.org</a>',  $this->plugin_name ),
+                    'https://pintopsolutions.com/downloads/add-widget-after-content/',
+                    'https://wordpress.org/support/view/plugin-reviews/add-widget-after-content?filter=5#postform'
+                );
 
-		/**
-		 * @param $extension_settings
-		 * @return mixed
-		 */
-
-		public function awac_get_tabs($extension_settings){
-			$tabs['awac_basic']  = __( 'General', $this->plugin_name );
-			if( ! empty( $extension_settings['styles'] ) ) {
-				$tabs['styles'] = __( 'Styles', $this->plugin_name );
-			}
-
-			if( ! empty( $extension_settings['misc'] ) ) {
-				$tabs['misc'] = __( 'Misc', $this->plugin_name );
-			}
-
-			return $tabs; 
-		}
-
+                return str_replace( '</span>', '', $text ) . ' | ' . $rate_text . '</span>';
+            } else {
+                return $text;
+            }
+        }
 
 	} /*End class AddWidgetAfterContentAdmin*/
 

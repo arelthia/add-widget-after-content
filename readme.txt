@@ -3,12 +3,12 @@ Contributors: apintop
 Donate link: http://PintopSolutions.com/donate
 Tags: posts, widget
 Requires at least: 4.0
-Tested up to: 4.5
-Stable tag: 2.1.1
+Tested up to: 4.6
+Stable tag: 2.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-This plugin is built to add a widget/sidebar after content. 
+This plugin is built to add a widget area/sidebar after content. 
 
 == Description ==
 
@@ -17,7 +17,8 @@ The plugin adds a sidebar that you can add any widget content to. The widget is 
 == Documentation ==
 1. Getting Started With AWAC <a href="https://pintopsolutions.com/doc/getting-started-with-awac/">AWAC Settings</a>
 1. How to place widgets side by side <a href="https://pintopsolutions.com/doc/placing-widgets-side-side/">Style Tips</a> 
-1. AWAC can now be added after the comments form <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/">View Addons</a>
+1. AWAC can now be added after the comments form <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/?utm_source=awacpage&utm_medium=doclink&utm_content=awaccomments&utm_campaign=plugin">View Addons</a>
+1. Style the AWAC After Content Widget Area <a target="_blank" href="https://pintopsolutions.com/downloads/awac-widget-area-styles/?utm_source=awacpage&utm_medium=doclink&utm_content=awacstyles&utm_campaign=plugin/">View Addons</a>
 1. Your suggestions and feedback is appreciated.
 
 == Installation ==
@@ -61,6 +62,10 @@ The settings page is located under the "Appearance" menu. On the settings page y
 
 
 == ChangeLog ==
+= 2.2 = 
+* 	Add option to set filter priority to high or low
+*	Add filters for widget area args
+* 	Add tabs to the settings page
 = 2.1.2 =
 * 	Increased filter priority
 = 2.1 =

@@ -74,8 +74,10 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * 
 		 */
 		public static function activate() {
-			
-			update_option('awac_priority', '10');
+			$priority = get_option('awac_priority',10);
+
+			update_option('awac_priority', $priority);
+
 			update_option('extensions', array());
 		}
 
