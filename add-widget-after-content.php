@@ -14,7 +14,7 @@
  * Plugin URI: 			https://pintopsolutions.com/downloads/add-widget-after-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			2.2
+ * Version: 			2.2.1
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
@@ -50,7 +50,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @var      string
 		 */
 		protected $plugin_slug = 'add-widget-after-content';
-		protected $plugin_version = '2.2';
+		protected $plugin_version = '2.2.1';
 		protected $settings;
 		/**
 		 * Initialize the plugin 
@@ -74,11 +74,14 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * 
 		 */
 		public static function activate() {
-			$priority = get_option('awac_priority',10);
+            if (get_option('awac_priority') === false){
+                update_option('awac_priority', '10');
+            }
 
-			update_option('awac_priority', $priority);
 
-			update_option('extensions', array());
+
+
+			update_option('awac_extensions', array());
 		}
 
 
@@ -86,6 +89,9 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * Get the priority to use when filtering the content
 		 */
 		public static function get_content_filter_priority(){
+            if (get_option('awac_priority') === false){
+                update_option('awac_priority', '10');
+            }
 
 			return get_option('awac_priority');
 

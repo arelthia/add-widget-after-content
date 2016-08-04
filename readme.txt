@@ -4,7 +4,7 @@ Donate link: http://PintopSolutions.com/donate
 Tags: posts, widget
 Requires at least: 4.0
 Tested up to: 4.6
-Stable tag: 2.2
+Stable tag: 2.2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -53,6 +53,18 @@ The settings page is located under the "Appearance" menu
 = Can you tell the widget which post types to display on? =
 The settings page is located under the "Appearance" menu. On the settings page you can exclude a post type or a post format. 
 
+= How can I add the widget area after my page builder content? =
+Go to Appearance > Widget After Content and set the Widget Priority to 99.
+
+= How can I add the widget area above/before my recent posts? =
+Go to Appearance > Widget After Content and set the Widget Priority to 10.
+
+= How do I add the widget area after my WordPress comments? =
+AWAC can now be added after the comments form <a target="_blank" href="https://pintopsolutions.com/downloads/awac-comments/?utm_source=awacpage&utm_medium=doclink&utm_content=awaccomments&utm_campaign=plugin">Learn More</a>
+
+= How do I style the widget area? =
+Style the AWAC After Content Widget Area <a target="_blank" href="https://pintopsolutions.com/downloads/awac-widget-area-styles/?utm_source=awacpage&utm_medium=doclink&utm_content=awacstyles&utm_campaign=plugin/">Learn More</a>
+Here are some <a href="https://pintopsolutions.com/doc/placing-widgets-side-side/">Style Tips</a>
 
 == Screenshots ==
 
@@ -62,6 +74,8 @@ The settings page is located under the "Appearance" menu. On the settings page y
 
 
 == ChangeLog ==
+= 2.2.1 =
+*   Fix awac_priority default value
 = 2.2 = 
 * 	Add option to set filter priority to high or low
 *	Add filters for widget area args
