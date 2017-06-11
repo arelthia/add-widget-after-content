@@ -3,7 +3,7 @@ Contributors: apintop
 Donate link: http://PintopSolutions.com/donate
 Tags: posts, widget
 Requires at least: 4.0
-Tested up to: 4.6
+Tested up to: 4.8
 Stable tag: 2.2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -12,7 +12,7 @@ This plugin is built to add a widget area/sidebar after content.
 
 == Description ==
 
-The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on posts after the content, before the comments. You can prevent the after content widget from showing on a post from the post editor page. You can also prevent the after content widget from displaying on specific posts types or post formats. The widget can also be added to pages. 
+The plugin adds a sidebar that you can add any widget content to. The widget is then displayed on single posts or pages after the content, before the comments. You can prevent the after content widget from showing on a post or page from the editor page. You can also prevent the after content widget from displaying on specific posts types or post formats. 
 
 == Documentation ==
 1. Getting Started With AWAC <a href="https://pintopsolutions.com/doc/getting-started-with-awac/">AWAC Settings</a>
@@ -65,6 +65,11 @@ AWAC can now be added after the comments form <a target="_blank" href="https://p
 = How do I style the widget area? =
 Style the AWAC After Content Widget Area <a target="_blank" href="https://pintopsolutions.com/downloads/awac-widget-area-styles/?utm_source=awacpage&utm_medium=doclink&utm_content=awacstyles&utm_campaign=plugin/">Learn More</a>
 Here are some <a href="https://pintopsolutions.com/doc/placing-widgets-side-side/">Style Tips</a>
+
+= Will the widget area show on my front pages? =
+The widget area will not show on the pages that you have set to be the front page or the posts page on Settings > Reading Settings > Front Page Displays > A Static Page.
+
+
 
 == Screenshots ==
 
