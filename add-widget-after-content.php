@@ -7,14 +7,14 @@
  * @author    Arelthia Phillips
  * @license   GPL-3.0+
  * @link      https://pintopsolutions.com/downloads/add-widget-after-content/
- * @copyright Copyright (C) 2014-2016 Arelthia Phillips
+ * @copyright Copyright (C) 2014-2020 Arelthia Phillips
  *
  * Plugin Name: 		Add Widget After Content
  * Description: 		This plugin adds a widget area after post content before the comments. You can also tell it not to display on a specific post or post format. 
  * Plugin URI: 			https://pintopsolutions.com/downloads/add-widget-after-content/
  * Author: 				Arelthia Phillips
  * Author URI: 			http://www.arelthiaphillips.com
- * Version: 			2.2.1
+ * Version: 			2.4.2
  * License: 			GPL-3.0+
  * License URI:       	http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: 		add-widget-after-content
@@ -50,7 +50,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		 * @var      string
 		 */
 		protected $plugin_slug = 'add-widget-after-content';
-		protected $plugin_version = '2.2.1';
+		protected $plugin_version = '2.4.2';
 		protected $settings;
 		/**
 		 * Initialize the plugin 
@@ -64,9 +64,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 			add_action( 'add_meta_boxes', array( $this,'after_content_create_metabox') );
 			add_action( 'save_post', array( $this,'after_content_save_meta') );
 			add_filter(	'the_content', array( $this,'insert_after_content'), $this->get_content_filter_priority());
-			$this->settings = new AddWidgetAfterContentAdmin($this->plugin_slug, $this->plugin_version );
-
-			
+			$this->settings = new AddWidgetAfterContentAdmin($this->plugin_slug, $this->plugin_version );	
 		}
 
 		/**
@@ -131,8 +129,10 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		public static function show_awac($post_id){
 			$exclude_format = (array)get_option('all_post_formats');
 			$exclude_type = (array)get_option('all_post_types');
+			$exclude_category = (array)get_option('all_post_categories');
 			$ps_type = get_post_type( $post_id );
 			$ps_format = get_post_format();
+			$ps_category = get_the_category();
 			
 			if(!is_singular()){ 
 		   		return false;
@@ -148,11 +148,18 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 				$ps_format = 'standard';
 			}
 
+			foreach ($ps_category as $categories) {
+				$cat = $categories->name;
+				if(isset($exclude_category[$cat]) == 1){
+					return false;
+				}
+				//return true;
+			}
+
 			if(isset($exclude_type[$ps_type]) == 1){
 				return false;
 			}	
 			
-
 			if(isset($exclude_format[$ps_format]) == 1){
 				return false;
 			}	
@@ -242,7 +249,6 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		    } else {
 		        update_post_meta( $post_id, '_awac_hide_widget', FALSE );
 		    }
-
 		    do_action( 'awac_after_save_meta');
 
 		} 	

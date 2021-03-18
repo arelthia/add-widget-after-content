@@ -6,7 +6,7 @@
  *
  * @package     Add Widget After Content
  * @subpackage  Add Widget After Content Admin
- * @copyright   Copyright (c) 2015, Arelthia Phillips
+ * @copyright   Copyright (c) 2015-2019, Arelthia Phillips
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       2.0.1
  */
@@ -93,7 +93,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
          * $extensions['TAB']['extension-id']['description']= 'Extension Description.';
          * return $extensions;}
          *
-         * TAB options are awac_basic, styles, misc
+         * TAB options are awac_basic, styles, addon
          */
         public function awac_get_extension_settings(){
             $extensions = get_option( 'awac_extensions');
@@ -107,14 +107,18 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
          * @return mixed
          */
         public function awac_get_tabs($extension_settings){
+
             $tabs['awac_basic']  = __( 'General', $this->plugin_name );
             if( ! empty( $extension_settings['styles'] ) ) {
                 $tabs['styles'] = __( 'Styles', $this->plugin_name );
             }
 
-            if( ! empty( $extension_settings['misc'] ) ) {
-                $tabs['misc'] = __( 'Misc', $this->plugin_name );
+            if( ! empty( $extension_settings['addons'] ) ) {
+
+                $tabs['addons'] = __( 'Add-ons', $this->plugin_name );
             }
+
+            $tabs = apply_filters( 'awac_add_tabs', $tabs );
 
             return $tabs;
         }
@@ -128,11 +132,26 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		public function awac_initialize_options(){
 			add_settings_section(
 				'awac_basic', 
-				__('Where to show the widget', $this->plugin_name), 
+				__('Where to show the widget area', $this->plugin_name), 
 				array($this, 'awac_basic_section_display'), 
 				'awac-options',
 				array('class'=>'subtitle')
 			);
+			/**
+			 * all_post_categories written by @doncullen
+		 	 */
+			add_settings_field(
+				'all_post_categories', 
+				__('Post Categories<p class="description">The widget will not show on post categories that are checked</p>', $this->plugin_name ), 
+				array($this, 'awac_postcategories_boxes_display'), 
+				'awac-options',
+				'awac_basic'
+			);
+			register_setting(
+				'awac_basic', 
+				'all_post_categories'
+			);
+
 			add_settings_field(
 				'all_post_types', 
 				__('Post Types<p class="description">The widget will not show on post types that are checked</p>', $this->plugin_name ), 
@@ -186,16 +205,16 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			}
 
 
-			//add settings created to show on the misc tab
-			if( ! empty( $settings['awac_misc'] ) ) {
+			//add settings created to show on the addon tab
+			if( ! empty( $settings['addons'] ) ) {
 				add_settings_section(
-				'awac_misc', 
-				__( 'Misc', $this->plugin_name ),
-				 array($this, 'awac_misc_section_display'), 
-				'misc'
+				'awac_addons', 
+				__( 'Addons', $this->plugin_name ),
+				 array($this, 'awac_addon_section_display'), 
+				'addons'
 				);
 
-				register_setting( 'misc', 'awac_misc' );
+				register_setting( 'addons', 'awac_addons' );
 			}
 
 		}
@@ -204,7 +223,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 
 		}
 
-		public function awac_misc_section_display(){
+		public function awac_addon_section_display(){
 
 		}
 
@@ -239,6 +258,27 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		}
 
 		/**
+		 * Display the categories for posts
+		 * @doncullen 
+		 */
+		public function awac_postcategories_boxes_display(){
+			$post_categories = get_categories(); 
+			$options = (array)get_option('all_post_categories');
+			
+			
+			foreach ( $post_categories as $category ) {
+				$cat = $category->name;
+				if( !isset($options[$cat]) ){
+					$options[$cat] = 0;
+				}
+				echo '<label><input name="all_post_categories['. $cat .']" id="all_post_categories['. $cat .']" type="checkbox" value="1" class="code" ' . checked( 1, $options[$cat], false ) . ' />'. $cat .'</label><br />' ;
+				
+			}
+		
+		}
+
+
+		/**
 		 * Display the checkboxes for each post format
 		 * 
 		 */
@@ -270,23 +310,19 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		}
 
 		/**
-		 * Display the radio buttons for setting the priority of the_content filter insert_after_content
+		 * Display the number field for setting the priority of the_content filter insert_after_content
 		 */
 		public function awac_priority_display(){
 			$option = get_option('awac_priority');
 			?>
 			<div>
-				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 10 ); ?> value='10'>
-					10
-				</label>
-			</div>
-			<div>
-				<label for="awac_priority"><input type='radio' name='awac_priority' <?php checked( $option, 99 ); ?> value='99'>
-					99
+				<label for="awac_priority">
+					<input type='number' name='awac_priority' min="1" max="100" value='<?php echo $option ?>'>
+					<p class='description'>Used to specify the order in which the widget area will be displayed.</p>
 				</label>
 			</div>
 
-			<?php
+		<?php
 		}
 
 

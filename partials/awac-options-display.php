@@ -13,7 +13,7 @@
 ?>
 
 
-    <div class=""wrap">
+    <div class="wrap">
     <h2><span class="dashicons dashicons-admin-settings"></span>Add Widget After Content Options</h2>
     <hr/>
 <?php do_action( 'ps_awac_settings_top' ); ?>
@@ -53,18 +53,29 @@
 
 
             <?php
-            if ( ! class_exists( 'AWAC_comments' ) ) {
-                $url3 = 'https://pintopsolutions.com/downloads/awac-comments/?utm_source=awacadmin&utm_medium=banner&utm_content=awaccomments&utm_campaign=plugin';
-                $img3 = plugins_url('../images/awac-comments.png', __FILE__ );
-                $link3       = sprintf( __( '<a href=%s><img src="%s" alt=""></a>', $this->plugin_name ), esc_url( $url3 ), esc_url( $img3 ) );
-                echo $link3;
+
+            if ( ! class_exists( 'awacPlus' ) ) {
+                $url6 = 'https://pintopsolutions.com/downloads/awac-plus/?utm_source=awacadmin&utm_medium=banner&utm_content=awacplus&utm_campaign=plugin';
+                $img6 = plugins_url('../images/awac-plus.png', __FILE__ );
+                $link6 = sprintf( __( '<a href=%s><img src="%s" alt=""></a>', $this->plugin_name ), esc_url( $url6 ), esc_url( $img6 ) );
+                echo $link6;
             }
+
+            if ( ! class_exists( 'awacWidgetControls' ) ) {
+                $url5 = 'https://pintopsolutions.com/downloads/awac-widget-controls/?utm_source=awacadmin&utm_medium=banner&utm_content=awaccontrols&utm_campaign=plugin';
+                $img5 = plugins_url('../images/awac-controls.png', __FILE__ );
+                $link5       = sprintf( __( '<a href=%s><img src="%s" alt=""></a>', $this->plugin_name ), esc_url( $url5 ), esc_url( $img5 ) );
+                echo $link5;
+            }
+
             if ( ! class_exists( 'awacWidgetStyles' ) ) {
                 $url4 = 'https://pintopsolutions.com/downloads/awac-widget-area-styles/?utm_source=awacadmin&utm_medium=banner&utm_content=awacstyles&utm_campaign=plugin';
                 $img4 = plugins_url('../images/awac-styles.png', __FILE__ );
                 $link4       = sprintf( __( '<a href=%s><img src="%s" alt=""></a>', $this->plugin_name ), esc_url( $url4 ), esc_url( $img4 ) );
                 echo $link4;
-            }?>
+            }
+            
+            ?>
         </div>
 
         <div id="post-body" class="has-sidebar">
@@ -92,5 +103,6 @@
                 </div>
             </div>
         </div>
+    </div>
         <?php do_action( 'ps_awac_settings_bottom' ); ?>
     </div>
