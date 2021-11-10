@@ -102,7 +102,7 @@ if ( !class_exists( 'AddWidgetAfterContent' ) ) {
 		public function register_sidebar() {
 			$args = array(
 	                'id' => 'add-widget-after-content',
-	                'name' => __( 'After Content' ),
+	                'name' => __( 'After Content', $this->plugin_slug ),
 	                'description' => __( 'This widget section shows after the content, but before comments on single post pages', $this->plugin_slug ),
 	                'before_widget' => '<div class="awac-wrapper"><div class="awac widget %1$s">',
 	                'after_widget' => '</div></div>',

@@ -52,8 +52,8 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 		 */
 		public function awac_add_options_page(){
 			add_theme_page(
-				'Add Widget After Content Options', 
-				'Widget After Content', 
+				__( 'Add Widget After Content Options', $this->plugin_name ), 
+				__( 'Widget After Content', $this->plugin_name ), 
 				'manage_options', 
 				'awac-options', 
 				array($this, 'awac_options_display')
@@ -292,7 +292,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			       }
 			    }
 			}else{
-				echo 'Theme does not support post formats';
+				echo __( 'Theme does not support post formats', $this->plugin_name );
 				return;
 			}
 
@@ -318,7 +318,7 @@ if ( !class_exists( 'AddWidgetAfterContentAdmin' ) ) {
 			<div>
 				<label for="awac_priority">
 					<input type='number' name='awac_priority' min="1" max="100" value='<?php echo $option ?>'>
-					<p class='description'>Used to specify the order in which the widget area will be displayed.</p>
+					<p class='description'><?php esc_html_e( 'Used to specify the order in which the widget area will be displayed.', $this->plugin_name ) ?></p>
 				</label>
 			</div>
 
