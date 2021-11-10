@@ -14,7 +14,7 @@
 
 
     <div class="wrap">
-    <h2><span class="dashicons dashicons-admin-settings"></span>Add Widget After Content Options</h2>
+    <h2><span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Add Widget After Content Options', $this->plugin_name ) ?></h2>
     <hr/>
 <?php do_action( 'ps_awac_settings_top' ); ?>
     
